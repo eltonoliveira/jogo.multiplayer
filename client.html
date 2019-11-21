@@ -5,13 +5,21 @@
 
         <style>
             #screen {
-                border: 1px solid #CCC;
+                border: 10px solid #CCC;
+                /** 
+                    Validar como corrigir o problema no IE, Edge
+                */
+                image-rendering: pixelated;
+                image-rendering: crisp-edges;
+                image-rendering: -moz-crisp-edges;
+                width: 30em;
+                height: 30em;
             }
         </style>
     </head>
 
     <body>
-        <canvas id="screen" width="500" height="500"></canvas>
+        <canvas id="screen" width="10" height="10"></canvas>
     </body>
 
     <script>
@@ -36,16 +44,38 @@
                     y: 1,
                 }
             },
-        };
+        };  
 
-        const color = 'red';
-        const positionX = 0;
-        const positionY = 0;
-        const width = 10;
-        const height = 10;
+        renderScreen();
 
-        context.fillStyle = color;
-        context.fillRect(positionX, positionY, width, height);
+        function renderScreen() {
+            clearScreen(context);
+            renderPlayersOnScreen(game.players, context);
+            renderFruitsOnScreen(game.fruits, context);
+            requestAnimationFrame(renderScreen);
+        }
+
+        function clearScreen(screenContext) {
+            screenContext.fillStyle = 'white';
+            screenContext.fillRect(0, 0, 10, 10);
+        }
+
+        function renderPlayersOnScreen(players, screenContext) {
+            for (playerId in players) {
+                const player = players[playerId];
+                screenContext.fillStyle = 'black';
+                screenContext.fillRect(player.x, player.y, 1, 1);
+            }
+        }
+
+        function renderFruitsOnScreen(fruits, screenContext) {
+            for (fruitId in fruits) {
+                const fruit = fruits[fruitId];
+                screenContext.fillStyle = 'green';
+                screenContext.fillRect(fruit.x, fruit.y, 1, 1);
+            }
+        }
+
     </script>
 
 </html>
